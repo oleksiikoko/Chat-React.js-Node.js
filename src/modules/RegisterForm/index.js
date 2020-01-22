@@ -1,3 +1,3 @@
-import RegisterForm from "./components/RegisterForm";
+import RegisterForm from "./containers/RegisterForm";
 
 export default RegisterForm;

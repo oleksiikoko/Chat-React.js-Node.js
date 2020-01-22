@@ -3,9 +3,17 @@ import { Form, Icon, Input } from "antd";
 import { Link } from "react-router-dom";
 
 import { Button, Block } from "components";
-// import { validateField } from "utils/helpers";
+import { validateField } from "utils/helpers";
 
 const LoginForm = props => {
+  const {
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit
+  } = props;
   return (
     <div>
       <div className="auth__top">
@@ -13,23 +21,38 @@ const LoginForm = props => {
         <p>Log in to your account</p>
       </div>
       <Block>
-        <Form
-          // onSubmit={}
-          className="login-form"
-        >
-          <Form.Item>
+        <Form onSubmit={handleSubmit} className="login-form">
+          <Form.Item
+            validateStatus={validateField("email", touched, errors)}
+            hasFeedback
+            help={!touched.email ? "" : errors.email}
+          >
             <Input
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+              id="email"
+              prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
               size="large"
-              placeholder="Username"
+              placeholder="E-Mail"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
           </Form.Item>
-          <Form.Item>
+          <Form.Item
+            validateStatus={
+              !touched.password ? "" : errors.password ? "error" : "success"
+            }
+            hasFeedback
+            help={!touched.password ? "" : errors.password}
+          >
             <Input
+              id="password"
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="password"
               size="large"
               placeholder="Password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
           </Form.Item>
           <Form.Item>
