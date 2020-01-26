@@ -3,8 +3,6 @@ import classNames from "classnames";
 import format from "date-fns/format";
 import isToday from "date-fns/isToday";
 
-import "./DialogItem.scss";
-
 import { IconReaded, Avatar } from "../";
 
 const getMessageTime = created_at => {
@@ -27,7 +25,7 @@ const DialogItem = ({ user, unreaded, created_at, text, isMe }) => (
     <div className="dialogs__item-info">
       <div className="dialogs__item-info-top">
         <b>{user.fullname}</b>
-        <span>{getMessageTime(created_at)}</span>
+        <span>{getMessageTime(new Date(created_at))}</span>
       </div>
       <div className="dialogs__item-info-bottom">
         <p>{text}</p>
