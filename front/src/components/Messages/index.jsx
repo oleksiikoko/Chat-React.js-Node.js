@@ -1,19 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Empty } from "antd";
+import { Empty, Spin } from "antd";
+import classNames from "classnames";
 
 import { Message } from "../";
 
-const Messages = ({ items }) => {
-  console.log(items);
-  return items ? (
-    <div>
-      {items.map(item => (
-        <Message key={item._id} {...item} />
-      ))}
+import "./Messages.scss";
+
+const Messages = ({ blockRef, isLoading, items }) => {
+  return (
+    <div
+      ref={blockRef}
+      className={classNames("messages", { "messages--loading": isLoading })}
+    >
+      {isLoading ? (
+        <Spin size="large" tip="Loading..."></Spin>
+      ) : items && !isLoading ? (
+        items.length > 0 ? (
+          items.map(item => <Message key={item._id} {...item} />)
+        ) : (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="No messages"
+          />
+        )
+      ) : (
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description="Choose dialog"
+        />
+      )}
     </div>
-  ) : (
-    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Choose dialog" />
   );
 };
 
