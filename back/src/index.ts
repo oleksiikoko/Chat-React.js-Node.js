@@ -1,11 +1,29 @@
-const mongoose = require("mongose");
-const express = require("express");
+import mongoose from "mongoose";
+import express from "express";
+import bodyParser from "body-parser";
+
+import { UserModel } from "./schemas";
+import { UserController } from "./controllers";
+
 const app = express();
 const port = 3002;
 const db = "chat";
 
-mongoose.connect(`mongodb://localhost:27017/${db}`, { useNewUrlParser: true });
+app.use(bodyParser.json());
 
-app.get("/", (_: any, res: any) => res.send("Hello World!"));
+const User = new UserController();
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+mongoose.connect(`mongodb://localhost:27017/${db}`, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true
+});
+
+app.get("/user/:id", User.show);
+app.delete("/user/:id", User.delete);
+app.post("/user/registration", User.create);
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}!`);
+});
