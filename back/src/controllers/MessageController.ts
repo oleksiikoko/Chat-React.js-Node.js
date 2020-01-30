@@ -19,7 +19,6 @@ class MessageController {
   }
 
   create(req: express.Request, res: express.Response) {
-    console.log("req.body.text");
     const postData = {
       text: req.body.text,
       dialog: req.body.dialog,
@@ -33,6 +32,27 @@ class MessageController {
       })
       .catch(reason => {
         res.json(reason);
+      });
+  }
+
+  delete(req: express.Request, res: express.Response) {
+    const id: string = req.params.id;
+    MessageModel.findByIdAndRemove(id)
+      .then(message => {
+        if (message) {
+          res.json({
+            message: "Message deteted"
+          });
+        } else {
+          res.json({
+            message: "Message not found"
+          });
+        }
+      })
+      .catch(() => {
+        res.json({
+          message: "Message not found"
+        });
       });
   }
 }
